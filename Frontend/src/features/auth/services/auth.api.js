@@ -64,3 +64,5 @@ export async function getMe() {
     }
 
 }
+
+export default api
