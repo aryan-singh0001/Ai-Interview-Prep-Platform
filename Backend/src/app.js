@@ -8,8 +8,19 @@ app.set("trust proxy", 1)
 
 app.use(express.json())
 app.use(cookieParser())
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['https://ai-interview-prep-platform-z06m.onrender.com', 'http://localhost:5173']
+
 app.use(cors({
-    origin: "https://ai-interview-prep-platform-z06m.onrender.com",
+    origin: (origin, callback) => {
+        if(!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by cors'))
+        }
+    },
     credentials: true
 }))
 
